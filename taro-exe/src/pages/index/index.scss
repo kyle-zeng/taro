@@ -1,0 +1,21 @@
+@import "~taro-ui/dist/style/components/list.scss";
+@import "~taro-ui/dist/style/components/flex.scss";
+
+.addr__nowrap {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    color: rgba(51, 51, 51, 1);
+    font-size: 30px;
+    .addr__list {
+      padding: 5px 0;
+    }
+    .addr__item {
+      color: #666666;
+      display: flex;
+      flex-direction: column;
+      border: 4rpx;
+      margin-left: 32px;
+      padding: 30px 0;
+    }
+  }

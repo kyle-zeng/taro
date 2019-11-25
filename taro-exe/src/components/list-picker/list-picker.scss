@@ -1,0 +1,30 @@
+@import "~taro-ui/dist/style/components/icon.scss";
+
+.picker-view-wrap {
+  margin: 26px 0 20px;
+  box-sizing: border-box;
+  color: #333;
+  line-height: 1.5;
+  transition: background-color 0.3s;
+  position: relative;
+  padding-right: 18px;
+}
+
+.picker-itemselect {
+  font-size: 30px;
+  text-align: right;
+}
+
+.picker-item {
+  font-size: 30px;
+  text-align: right;
+  color: #999999;
+}
+
+.picker-item__icon {
+  text-align: left;
+  color: rgba(128, 128, 128, 1);
+  font-size: 45px;
+  padding-bottom: 8px;
+}
+
