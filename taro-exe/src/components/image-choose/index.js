@@ -1,19 +1,15 @@
 /* eslint-disable react/react-in-jsx-scope */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Canvas } from '@tarojs/components'
-import AtImagePicker from '@components/image-picker'
+import AtImagePicker from '../image-picker'
 import { connect } from '@tarojs/redux'
-import { uploadImage } from '../../store/home/action'
-import { idCardOcr } from '../../store/user/action'
+
 
 @connect(
   ({ home, user }) => ({
     fileNameKeyValue: home.fileNameKeyValue,
-    ocrResult: user.ocrResult
   }),
   {
-    dispatchUploadFile: uploadImage,
-    dispatchIdCardOcr: idCardOcr
   },
 )
 class ChooseImage extends Component {
@@ -148,9 +144,13 @@ class ChooseImage extends Component {
                 canvasId: "canone",
                 destWidth: canvasWidth,
                 destHeight: canvasHeight,
+                fileType: "jpeg",
                 success: res2 => {
                   // 上传压缩后的图片 res2.tempFilePath
-                  this.uploadLoader(fileNameKey,res2.tempFilePath,uploadType)
+                  const blob = this.convertBase64UrlToBlob(res2.tempFilePath)
+                  const urlB = URL.createObjectURL(blob)
+                  console.log('------urlB---------',urlB)
+                  this.uploadLoader(fileNameKey,urlB,uploadType)
                 }
               })
             })
@@ -174,6 +174,15 @@ class ChooseImage extends Component {
         }
     })
   }
+  convertBase64UrlToBlob(urlData){
+    var arr = urlData.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n)
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n)
+    }
+    var b = new Blob([u8arr], {type:mime})
+    return b
+  }
 
   // 上传组件
   uploadLoader = (fileNameKey,filePath,uploadType) => {
@@ -182,14 +191,6 @@ class ChooseImage extends Component {
       formData: {
         fileNameKey: fileNameKey,
       },
-    }
-    Taro.showLoading({
-      title: '图片上传中....'
-    })
-    if ('ocr' === uploadType) {
-      this.props.dispatchIdCardOcr(payload,this.props.onFilesValue)
-    }else{
-      this.props.dispatchUploadFile(payload,this.props.onFilesValue)
     }
   }
  // 选择失败回调

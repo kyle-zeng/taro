@@ -1,6 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import AddressPicker from '../../components/list-picker/address-picker'
+import { AtImagePicker  } from 'taro-ui'
+import ChooseImage from '../../components/image-choose'
 import './index.scss'
 
 export default class Index extends Component {
@@ -19,6 +21,17 @@ export default class Index extends Component {
   state = {
     homeAreaId: [],
     homeAreaInfo: '',
+    files: [],
+    chooseImg: {
+      files: [],
+      // 图片总数量
+      fileCount: 2,
+      length:2,
+      fileNameKeys: ['pic1'],
+      nameList:['图片1'],
+      showUploadBtn:true,
+      upLoadImg:[]
+    },
   }
 
   componentWillMount () { }
@@ -42,6 +55,26 @@ export default class Index extends Component {
     }
   }
 
+  onChange (files) {
+    this.setState({
+      files
+    })
+  }
+  onFail (mes) {
+    console.log(mes)
+  }
+  onImageClick (index, file) {
+    console.log(index, file)
+  }
+
+  getOnFilesValue = (params) => {
+    const { fileNameKey, fileNameKeyValue } = params
+    console.log(fileNameKey,fileNameKeyValue)
+    this.setState({
+      [fileNameKey]: fileNameKeyValue
+    })
+  }
+
   render () {
     return (
       <View className='index'>
@@ -56,6 +89,19 @@ export default class Index extends Component {
               onHandleToggleShow={this.toggleAddressPicker.bind(this)}/>
           </View>
           </View>
+
+          <AtImagePicker
+            // multiple={false}
+            length={4} //单行的图片数量
+            files={this.state.files}
+            onChange={this.onChange.bind(this)}
+            onFail={this.onFail.bind(this)}
+            onImageClick={this.onImageClick.bind(this)}
+        />
+
+        <ChooseImage 
+          chooseImg = {this.state.chooseImg}
+          onFilesValue={this.getOnFilesValue.bind(this)} />
       </View>
     )
   }

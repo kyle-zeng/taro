@@ -4,13 +4,12 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import AtComponent from '../../utils/component'
 import { uuid } from '../../utils/utils'
-import '../../styles/index.scss'
+import './image-picker.scss'
 import ImagePic from './assets/image-picker.png'
-import URL from '../../constants/urls'
+import NORMAL from './assets/image-picker-bg.png'
+import ID_CARD_FRONT from './assets/image-picker-bg-p1.png'
+import ID_CARD_BACK from './assets/image-picker-bg-p2.png'
 
-const NORMAL = `${URL.CDN}/static/pic/image-picker-bg.png`
-const ID_CARD_FRONT = `${URL.CDN}/static/pic/image-picker-bg-p1.png`
-const ID_CARD_BACK = `${URL.CDN}/static/pic/image-picker-bg-p2.png`
 
 // 生成 jsx 二维矩阵
 const generateMatrix = (files, col, fileCount) => {
