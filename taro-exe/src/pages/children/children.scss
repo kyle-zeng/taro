@@ -20,11 +20,13 @@
       margin-left: 32px;
       padding: 30px 0;
     }
-  }
+}
 
-.title {
+.children2{
   flex-direction: row;
-  flex-wrap: nowrap;
-  padding-top: 30px;
-  font-size: 35px;
+  padding-left: 30px;
+  font-size: 30px;
+  .infotext{
+    color: #944444;
+  }
 }

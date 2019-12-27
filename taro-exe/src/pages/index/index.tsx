@@ -4,7 +4,8 @@ import AddressPicker from '../../components/list-picker/address-picker'
 import { AtImagePicker  } from 'taro-ui'
 import ChooseImage from '../../components/image-choose'
 import './index.scss'
-
+import Children1 from '../children/children1'
+import Children2 from '../children/children2'
 export default class Index extends Component {
 
   /**
@@ -19,19 +20,20 @@ export default class Index extends Component {
   }
 
   state = {
-    homeAreaId: [],
-    homeAreaInfo: '',
+    areaId: [],
+    areaInfo: '',
     files: [],
     chooseImg: {
       files: [],
       // 图片总数量
       fileCount: 2,
       length:2,
+      filesType:'idcard',
       fileNameKeys: ['pic1'],
-      nameList:['图片1'],
       showUploadBtn:true,
       upLoadImg:[]
     },
+    children1V: ''
   }
 
   componentWillMount () { }
@@ -46,11 +48,11 @@ export default class Index extends Component {
 
   toggleAddressPicker = (params) => {
     const { tempAreaId, tempAreaInfo, flag } = params
-    console.log('homeAreaId:'+tempAreaId + '  homeAreaInfo:' +tempAreaInfo)
+    console.log('areaId:'+tempAreaId + '  areaInfo:' +tempAreaInfo)
     if(flag){
       this.setState({
-        homeAreaId: tempAreaId,
-        homeAreaInfo: tempAreaInfo,
+        areaId: tempAreaId,
+        areaInfo: tempAreaInfo,
       })
     }
   }
@@ -74,34 +76,58 @@ export default class Index extends Component {
       [fileNameKey]: fileNameKeyValue
     })
   }
+  // 接收Children1子组件传来的值
+  handleValueChange = (value) => {
+    console.log('接收Children1子组件传来的值===>',value)
+    this.setState({
+      children1V: value
+    })
+  }
 
   render () {
     return (
       <View className='index'>
-         <View className='at-row addr__nowrap'>
+        <View className='title'>
+          1、地址三级联动：
+        </View>
+        <View className='at-row addr__nowrap'>
           <View className='at-col at-col-1 at-col--auto addr__item'>住址</View>
           <View className='at-col addr__list'>
             <AddressPicker 
               lab='请选择'
               columns={3}
               addrInitType={0}
-              initValue={this.state.homeAreaInfo}
+              initValue={this.state.areaInfo}
               onHandleToggleShow={this.toggleAddressPicker.bind(this)}/>
           </View>
-          </View>
+        </View>
 
+        <View className='title'>
+          2、图片选择器改造：
+        </View>
+        <View>
           <AtImagePicker
             // multiple={false}
             length={4} //单行的图片数量
             files={this.state.files}
             onChange={this.onChange.bind(this)}
             onFail={this.onFail.bind(this)}
-            onImageClick={this.onImageClick.bind(this)}
-        />
+            onImageClick={this.onImageClick.bind(this)}/>
+          <ChooseImage 
+            chooseImg = {this.state.chooseImg}
+            onFilesValue={this.getOnFilesValue.bind(this)} />
+        </View>
 
-        <ChooseImage 
-          chooseImg = {this.state.chooseImg}
-          onFilesValue={this.getOnFilesValue.bind(this)} />
+        <View className='title'>
+          3、父子组件，兄弟组件之间值传递：
+        </View>
+        <View>
+          {/*传递一个函数给子组件1，接收子组件1状态值  */}
+          <Children1 onValueChange = {this.handleValueChange}/>
+          {/* 将子组件1获取的值传递给子组件2 */}
+          <Children2 areaInfo = {this.state.children1V}/>
+        </View>
+        
       </View>
     )
   }
